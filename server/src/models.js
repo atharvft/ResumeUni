@@ -1,0 +1,17 @@
+import mongoose from "mongoose";
+const theme = { palette: { type: String, enum: ["nebula", "aurora", "solar", "mono"], default: "nebula" }, galaxyShape: { type: String, enum: ["spiral", "cluster", "ring"], default: "spiral" }, particleDensity: { type: String, enum: ["low", "medium", "high"], default: "medium" } };
+const stringId = { type: String, required: true };
+const skillSchema = new mongoose.Schema({ _id: stringId, resumeId: { type: String, ref: "Resume", index: true }, name: { type: String, required: true }, category: { type: String, required: true }, proficiency: { type: Number, min: 0, max: 100, required: true }, yearsUsed: Number, order: Number }, { timestamps: true });
+const projectSchema = new mongoose.Schema({ _id: stringId, resumeId: { type: String, ref: "Resume", index: true }, title: { type: String, required: true }, description: String, techStack: [String], links: { repo: String, live: String }, media: [{ url: String, type: String, caption: String }], impactScore: { type: Number, min: 0, max: 100 }, order: Number }, { timestamps: true });
+const experienceSchema = new mongoose.Schema({ _id: stringId, resumeId: { type: String, ref: "Resume", index: true }, company: { type: String, required: true }, role: { type: String, required: true }, startDate: String, endDate: String, description: String, achievements: [String], location: String, order: Number }, { timestamps: true });
+const educationSchema = new mongoose.Schema({ _id: stringId, resumeId: { type: String, ref: "Resume", index: true }, institution: { type: String, required: true }, degree: String, fieldOfStudy: String, startDate: String, endDate: String, description: String, order: Number }, { timestamps: true });
+const resumeSchema = new mongoose.Schema({ _id: stringId, userId: { type: String, unique: true, index: true }, slug: { type: String, unique: true, index: true }, customDomain: { type: String, index: true }, title: String, bio: String, socialLinks: { github: String, linkedin: String, website: String, twitter: String }, theme, isPublished: { type: Boolean, default: false }, viewCount: { type: Number, default: 0 } }, { timestamps: true });
+const userSchema = new mongoose.Schema({ _id: stringId, name: { type: String, required: true }, email: { type: String, unique: true, required: true }, passwordHash: { type: String, required: true }, authProvider: { type: String, default: "local" }, avatarUrl: String }, { timestamps: true });
+const refreshSessionSchema = new mongoose.Schema({ _id: stringId, userId: { type: String, required: true, index: true }, expiresAt: { type: Date, required: true, expires: 0 } }, { timestamps: true });
+export const UserModel = mongoose.model("User", userSchema);
+export const ResumeModel = mongoose.model("Resume", resumeSchema);
+export const SkillModel = mongoose.model("Skill", skillSchema);
+export const ProjectModel = mongoose.model("Project", projectSchema);
+export const ExperienceModel = mongoose.model("Experience", experienceSchema);
+export const EducationModel = mongoose.model("Education", educationSchema);
+export const RefreshSessionModel = mongoose.model("RefreshSession", refreshSessionSchema);
