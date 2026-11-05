@@ -5,6 +5,7 @@ import { demoUniverse } from "./types";
 import { audioEngine } from "./components/AudioEngine";
 import { AIAssistant } from "./components/AIAssistant";
 import { EasterEggs } from "./components/EasterEggs";
+import API_BASE_URL from "../config/api";
 
 const palettes = ["nebula", "aurora", "solar", "mono"];
 const sessionId =
@@ -108,7 +109,7 @@ export function UniverseViewer({ slug }) {
 
   const track = (eventType, targetId, metadata, resumeId = universe?.id) => {
     if (!resumeId) return;
-    fetch(`/api/analytics/${resumeId}/event`, {
+    fetch(`${API_BASE_URL}/api/analytics/${resumeId}/event`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -124,7 +125,7 @@ export function UniverseViewer({ slug }) {
     if (slug === "demo") return;
     setLoading(true);
     setError(false);
-    fetch(`/api/public/${slug}`)
+    fetch(`${API_BASE_URL}/api/public/${slug}`)
       .then((response) => (response.ok ? response.json() : Promise.reject()))
       .then((data) => {
         setUniverse(data);

@@ -1,10 +1,11 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from "react";
+import API_BASE_URL from "../config/api";
 const authKey = "universe-access-token";
 const refreshKey = "universe-refresh-token";
 const api = async (path, options = {}) => {
     const token = localStorage.getItem(authKey);
-    const response = await fetch(path, { ...options, headers: { "content-type": "application/json", ...(token ? { authorization: `Bearer ${token}` } : {}), ...(options.headers ?? {}) } });
+    const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers: { "content-type": "application/json", ...(token ? { authorization: `Bearer ${token}` } : {}), ...(options.headers ?? {}) } });
     if (!response.ok)
         throw new Error((await response.json().catch(() => null))?.error?.message ?? "Request failed");
     return response.status === 204 ? null : response.json();

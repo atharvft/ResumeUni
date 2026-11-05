@@ -19,7 +19,7 @@ const port = Number(process.env.PORT ?? 5000);
 const jwtSecret = process.env.JWT_ACCESS_SECRET ?? "development-secret";
 const refreshSecret = process.env.JWT_REFRESH_SECRET ?? "development-refresh-secret";
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_ORIGIN ?? "http://localhost:5173" }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN ?? "http://localhost:5173", credentials: true }));
 app.use(express.json({ limit: "200kb" }));
 cloudinary.config({ cloud_name: process.env.CLOUDINARY_CLOUD_NAME, api_key: process.env.CLOUDINARY_API_KEY, api_secret: process.env.CLOUDINARY_API_SECRET, secure: true });
 const mediaUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });

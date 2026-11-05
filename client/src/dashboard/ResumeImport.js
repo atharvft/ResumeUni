@@ -1,5 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from "react";
+import API_BASE_URL from "../config/api";
 const tokenKey = "universe-access-token";
 export function ResumeImport() {
     const [resumeId, setResumeId] = useState("");
@@ -8,7 +9,7 @@ export function ResumeImport() {
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState("");
     useEffect(() => {
-        fetch("/api/resumes/me", { headers: { authorization: `Bearer ${localStorage.getItem(tokenKey)}` } })
+        fetch(`${API_BASE_URL}/api/resumes/me`, { headers: { authorization: `Bearer ${localStorage.getItem(tokenKey)}` } })
             .then((response) => response.json())
             .then((resume) => setResumeId(resume.id))
             .catch(() => setMessage("Sign in before importing a resume."));
@@ -22,7 +23,7 @@ export function ResumeImport() {
         const form = new FormData();
         form.append("resume", selectedFile);
         try {
-            const response = await fetch(`/api/resumes/${resumeId}/import?apply=true`, { method: "POST", headers: { authorization: `Bearer ${localStorage.getItem(tokenKey)}` }, body: form });
+            const response = await fetch(`${API_BASE_URL}/api/resumes/${resumeId}/import?apply=true`, { method: "POST", headers: { authorization: `Bearer ${localStorage.getItem(tokenKey)}` }, body: form });
             const data = await response.json();
             if (!response.ok)
                 setMessage(data.error?.message ?? "Unable to scan resume.");

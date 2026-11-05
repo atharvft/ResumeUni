@@ -54,3 +54,6 @@ client/.env.*.local
 !.env.example
 !server/.env.example
 !client/.env.example
+
+# Public (non-secret) production build config for the frontend
+!client/.env.production

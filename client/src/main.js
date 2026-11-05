@@ -2,6 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { lazy, StrictMode, Suspense, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
+import API_BASE_URL from "./config/api";
 const UniverseViewer = lazy(() => import("./viewer/UniverseViewer").then((module) => ({ default: module.UniverseViewer })));
 const PlainResume = lazy(() => import("./viewer/PlainResume").then((module) => ({ default: module.PlainResume })));
 const Dashboard = lazy(() => import("./dashboard/Dashboard").then((module) => ({ default: module.Dashboard })));
@@ -15,7 +16,7 @@ const appHosts = new Set(["localhost", "127.0.0.1"]);
 function DomainResolver() {
     const [slug, setSlug] = useState(undefined);
     useEffect(() => {
-        fetch(`/api/public/domain/${window.location.hostname}`)
+        fetch(`${API_BASE_URL}/api/public/domain/${window.location.hostname}`)
             .then((response) => (response.ok ? response.json() : Promise.reject()))
             .then((data) => setSlug(data.slug))
             .catch(() => setSlug(null));
